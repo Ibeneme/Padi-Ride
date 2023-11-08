@@ -36,10 +36,10 @@ export default function AuthSuccess() {
       </View>
       <View style={styles.containerButton}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("drawer")}
+          onPress={() => navigation.navigate("SignIn")}
           style={styles.buttonClick}
         >
-          <Text style={styles.buttonText}>Proceed to Home</Text>
+          <Text style={styles.buttonText}>Proceed to Login</Text>
         </TouchableOpacity>
       </View>
       <StatusBar style="auto" />

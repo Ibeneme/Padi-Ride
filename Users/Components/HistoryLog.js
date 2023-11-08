@@ -46,7 +46,7 @@ const HistoryLogs = ({ receiversName, icon, location, price }) => {
           </Text>
           <Text
             style={{
-              fontSize: 12,
+              fontSize: 14,
               fontFamily: "Regular",
               color: "gray",
             }}

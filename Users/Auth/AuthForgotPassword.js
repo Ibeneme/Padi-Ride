@@ -11,11 +11,12 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
-//import { useDispatch } from "react-redux";
+import { forgotPassword } from "../../Redux/Auth/Auth";
+import { useDispatch } from "react-redux";
 
 const AuthForgotPassword = () => {
   const navigation = useNavigation();
-  // const dispatch = useDispatch();n
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
   const [email, setEmail] = useState("");
@@ -27,17 +28,65 @@ const AuthForgotPassword = () => {
 
   const handleLogin = () => {
     setLoading(true);
-    navigation.navigate('verify')
+
+    if (emailError) {
+      setLoading(false);
+      setError("Incorrect entries.");
+      return; // Do not proceed with registration if there are errors
+    }
+    if (!email) {
+      setError("Please fill in all input fields.");
+      setLoading(false);
+      return;
+    }
+
+    const loginData = {
+      email: email,
+    };
+
+    dispatch(forgotPassword(loginData))
+      .then((response) => {
+        setLoading(false);
+        console.log("Login successful:", response);
+        if (response.payload?.status === "success") {
+          navigation.navigate("AuthVerifyTwo", {
+            emailAddress: email,
+          });
+        }
+        // navigation.navigate("success")
+        // Handle successful login here
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log("Login error:", error);
+        // Handle login error here
+      });
   };
 
   const handleEmailChange = (email) => {
-    setError("");
     setEmailError("");
+    setError("");
     const formattedEmail = email
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
+      .toLowerCase()
+      .replace(/^\w/, (c) => c.toUpperCase());
+
     setEmail(formattedEmail);
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    const isValidEmail = emailPattern.test(formattedEmail);
+
+    setEmailError(
+      isValidEmail
+        ? ""
+        : `Please Enter a Valid Email address, Hint: "Example@mail.com" `
+    );
+
+    if (isValidEmail) {
+      setEmailError("");
+    }
+    if (isValidEmail === " ") {
+      setEmailError("");
+    }
   };
 
   const handlePasswordChange = (password) => {

@@ -5,6 +5,7 @@ import JoinRide from "../Users/Menu/JoinRide";
 import Passenger from "../Users/Menu/Passenger";
 import { View, StatusBar, Text } from "react-native";
 import { FontAwesome5 } from "react-native-vector-icons";
+import User from "../Users/Menu/User";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +29,6 @@ function MyTabs() {
         tabBarStyle: {
           backgroundColor: "white",
           paddingTop: 12,
-       
         },
         headerStyle: {
           borderBottomWidth: 3,
@@ -93,7 +93,7 @@ function MyTabs() {
         component={Deliver}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         options={{
           headerShown: false,
           tabBarLabel: ({ focused }) => (
@@ -120,7 +120,8 @@ function MyTabs() {
         }}
         name="Passenger"
         component={Passenger}
-      />
+      /> */}
+
       <Tab.Screen
         options={{
           headerShown: false,
@@ -148,6 +149,35 @@ function MyTabs() {
         }}
         name="JoinRide"
         component={JoinRide}
+      />
+
+      <Tab.Screen
+        options={{
+          headerShown: false,
+          tabBarLabel: ({ focused }) => (
+            <Text
+              style={[
+                tabBarLabelStyle,
+                { color: focused ? "#515FDF" : "#66666666", fontSize: 14 },
+              ]}
+            >
+              Profile
+            </Text>
+          ),
+
+          tabBarIcon: ({ focused, color, size }) => (
+            <FontAwesome5
+              style={[
+                tabBarIconStyle,
+                { color: focused ? "#515FDF" : "#66666666" },
+              ]}
+              name="user"
+              size={20}
+            />
+          ),
+        }}
+        name="user"
+        component={User}
       />
     </Tab.Navigator>
   );

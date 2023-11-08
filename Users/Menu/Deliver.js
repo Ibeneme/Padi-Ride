@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,10 +12,50 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import HistoryLogs from "../Components/HistoryLog";
 import { useNavigation } from "@react-navigation/native";
 const imageBackground = require("../../assets/Images/Dashboard.png");
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUserDeliveryHistory } from "../../Redux/Deliveries/Deliveries";
 
 const Deliver = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("flipper"); // "flipper" is active by default
+  const { isLoading, deliveries } = useSelector((state) => state.delivery);
+  const { userProfile } = useSelector((state) => state.user);
+  const [delivery, setDeliveries] = useState([]);
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch(fetchAllPosts())
+        .then((response) => {
+          console.log(response?.payload?.data?.post_details, "posts");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      dispatch(fetchUserProfile())
+        .then((response) => {
+          console.log("dispatched");
+          setUserProfile(response?.payload);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [dispatch]);
+
+  const fetchData = () => {
+    dispatch(fetchUserDeliveryHistory())
+      .then((response) => {
+        console.log("Data fetched successfully", response?.payload);
+        setDeliveries(response?.payload);
+      })
+      .catch((error) => {
+        console.log("Error fetching data:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const toggleFlipper = () => {
     setActiveTab("flipper");
@@ -34,7 +74,7 @@ const Deliver = () => {
   //   setRipperActive(!ripperActive);
   //   setFlipperActive(false);
   // };
-
+  console.log(deliveries, "deliveries");
   return (
     <SafeAreaView
       style={{
@@ -64,7 +104,11 @@ const Deliver = () => {
             source={imageBackground}
           />
           <View style={styles.overlay}>
-            <Text style={styles.name}> 👋 {""}Hello, Ibeneme Ikenna</Text>
+            <Text style={styles.name}>
+              {" "}
+              👋 {""}Hello, {""}
+              {userProfile.first_name}
+            </Text>
             <View
               style={{
                 flexDirection: "column",
@@ -107,7 +151,6 @@ const Deliver = () => {
                   gap: 12,
                 }}
                 onPress={() => navigation.navigate("CreateParcel")}
-            
               >
                 <FontAwesome5 name="paper-plane" size={18} color="white" />
 
@@ -216,7 +259,7 @@ const Deliver = () => {
                     fontFamily: "Bold",
                   }}
                 >
-                  3
+                  {delivery?.length}
                 </Text>
                 <View>
                   <Text
@@ -259,7 +302,7 @@ const Deliver = () => {
                     fontFamily: "Bold",
                   }}
                 >
-                  3
+                 {delivery?.length}
                 </Text>
                 <View>
                   <Text
@@ -316,7 +359,25 @@ const Deliver = () => {
                   gap: 8,
                 }}
               >
-                <HistoryLogs
+                {delivery?.length === 0 ? "No deliveries avaliable" : null}
+
+                {delivery?.map((data, index) => (
+                  <View key={index}>
+                    {/* Render the HistoryLogs component with the delivery data */}
+                    <HistoryLogs
+                      receiversName={`Destination: ${data?.destination}`}
+                      location={
+                        data?.can_carry_light === true
+                          ? "Can carry light weight"
+                          : "Can carry heavy weight"
+                      }
+                      price={`NGN${data.max_price}`}
+                      icon="paper-plane"
+                    />
+                  </View>
+                ))}
+
+                {/* <HistoryLogs
                   receiversName="Ibeneme Ikenna"
                   location="Port Harcourt"
                   price="$200.00"
@@ -333,7 +394,7 @@ const Deliver = () => {
                   location="123 Main St, City"
                   price="$100.00"
                   icon="truck"
-                />
+                /> */}
               </View>
             </View>
           </View>
@@ -478,6 +539,7 @@ const Deliver = () => {
                   View your Parcel History
                 </Text> */}
               </View>
+
               <View
                 style={{
                   gap: 8,

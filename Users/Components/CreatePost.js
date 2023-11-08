@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   Image,
@@ -7,19 +7,75 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
+import { createPost, fetchAllPosts } from "../../Redux/Posts/Post";
+import { useDispatch, useSelector } from "react-redux";
 
 const CreatePost = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState("");
   const [charCount, setCharCount] = useState(0);
+  const [res, setRes] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+
 
   const handleTextChange = (text) => {
     setInputValue(text);
     setCharCount(text.length);
+    console.log(text);
+  };
+
+
+
+  const { loading, userProfile } = useSelector((state) => state.post);
+
+  useEffect(() => {
+    if (loading === true) {
+      dispatch(fetchAllPosts())
+        .then((response) => {
+          console.log(response?.payload?.data?.post_details, "postslt");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [dispatch]);
+
+  const fetchingAllPost = () => {
+    dispatch(fetchAllPosts())
+      .then((response) => {
+        console.log(response?.payload?.data, "postsrr");
+        navigation.navigate("drawer");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleCreatePost = () => {
+    setLoading(true);
+
+    console.log(inputValue, "valu");
+    const post = inputValue;
+
+    dispatch(createPost({ post }))
+      .then((response) => {
+        setLoading(false);
+        console.log(response.payload, "setRes");
+        setRes(response?.payload?.status);
+        if (response?.payload?.status === "Post created.") {
+          fetchingAllPost();
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
   };
 
   const selectImage = async () => {
@@ -35,6 +91,10 @@ const CreatePost = () => {
     }
   };
 
+
+
+
+  //console.log(submitForm, 'travelTo')
   return (
     <SafeAreaView
       style={{
@@ -73,11 +133,12 @@ const CreatePost = () => {
             justifyContent: "center",
             borderRadius: 8,
           }}
+          onPress={handleCreatePost}
         >
           <Text
             style={{ fontFamily: "SemiBold", fontSize: 16, color: "white" }}
           >
-            Upload
+            {isLoading ? <ActivityIndicator /> : "Upload"}
           </Text>
         </TouchableOpacity>
       </View>
@@ -139,7 +200,7 @@ const CreatePost = () => {
               : `${charCount}/1000 `}
           </Text>
         </View>
-        <TouchableOpacity onPress={selectImage}>
+        {/* <TouchableOpacity onPress={selectImage}>
           <View
             style={{
               marginTop: 12,
@@ -163,7 +224,7 @@ const CreatePost = () => {
               </Text>
             )}
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );

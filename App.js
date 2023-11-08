@@ -2,6 +2,22 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import MyStack from "./Routing/Stack";
 import { useFonts } from "expo-font";
+import AuthStack from "./Routing/AuthStack";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import store from "./Redux/Store";
+
+const AppContent = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.registration?.user?.tokens);
+
+  console.log(user, "user");
+  return (
+    <NavigationContainer>
+      {user ? <MyStack /> : null}
+      {!user ? <AuthStack /> : null}
+    </NavigationContainer>
+  );
+};
 
 export default function App() {
   const [loaded] = useFonts({
@@ -16,9 +32,9 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <MyStack />
-    </NavigationContainer>
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
   );
 }
 

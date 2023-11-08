@@ -1,13 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import Test from "../Users/Auth/Test";
 import MyTabs from "./BottomNavigation";
-import Welcome from "../Users/Auth/Welcome";
-import Auth from "../Users/Auth/Auth";
-import AuthSignIn from "../Users/Auth/AuthSignIn";
-import AuthCreateAccount from "../Users/Auth/AuthCreateAccount";
-import AuthForgotPassword from "../Users/Auth/AuthForgotPassword";
-import AuthVerify from "../Users/Auth/AuthVerify";
-import AuthSuccess from "../Users/Auth/AuthSuccess";
 import CreatePost from "../Users/Components/CreatePost";
 import CreateDelivery from "../Users/Deliver/CreateDelivery";
 import DeliverySummary from "../Users/Deliver/DeliverySummary";
@@ -22,6 +14,7 @@ import PassengerSummary from "../Users/Passenger/PassengerSummary";
 import PassengerSuccess from "../Users/Passenger/Success";
 import CreateRide from "../Users/JoinRide/Join";
 import RideSummary from "../Users/JoinRide/JoinTwo";
+import UpdateProfile from "../Users/User/UpdateProfile";
 const Stack = createStackNavigator();
 
 function MyStack() {
@@ -38,17 +31,7 @@ function MyStack() {
         component={MyTabs}
       />
 
-      <Stack.Screen
-        name="Auth"
-        options={{ headerShown: false }}
-        component={Auth}
-      />
-      <Stack.Screen name="SignIn" component={AuthSignIn} />
-      <Stack.Screen name="createAccount" component={AuthCreateAccount} />
-      <Stack.Screen name="forgotPassword" component={AuthForgotPassword} />
-      <Stack.Screen name="verify" component={AuthVerify} />
-      <Stack.Screen name="success" component={AuthSuccess} />
-
+  
       {/* Posts */}
       <Stack.Screen
         options={{ headerShown: false }}
@@ -71,9 +54,12 @@ function MyStack() {
         name="DeliverySummaryParcel"
         component={DeliverySummaryParcel}
       />
+
       <Stack.Screen name="TravellersDetails" component={TravellersDetails} />
       <Stack.Screen name="message" component={TravellersMessage} />
       <Stack.Screen name="payment" component={ParcelPayment} />
+      <Stack.Screen name="updateprofile" component={UpdateProfile} />
+      
 
       {/* Parcel */}
       <Stack.Screen name="passengers" component={Passenger} />

@@ -11,11 +11,12 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
-//import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../Redux/Auth/Auth";
 
 const AuthSignIn = () => {
   const navigation = useNavigation();
-  // const dispatch = useDispatch();n
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
   const [email, setEmail] = useState("");
@@ -27,25 +28,83 @@ const AuthSignIn = () => {
 
   const handleLogin = () => {
     setLoading(true);
-    navigation.navigate("success")
+
+    if (passwordError || emailError) {
+      setLoading(false);
+      setError("Incorrect entries.");
+      return; // Do not proceed with registration if there are errors
+    }
+    if (!email || !password) {
+      setError("Please fill in all input fields.");
+      setLoading(false);
+      return;
+    }
+
+    const loginData = {
+      email: email,
+      password: password,
+    };
+
+    dispatch(loginUser(loginData))
+      .then((response) => {
+        setLoading(false);
+        console.log("Login successful:", response);
+        if (response.payload?.message === "Login successful") {
+        // navigation.navigate("drawers");
+        }
+        // navigation.navigate("success")
+        // Handle successful login here
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("Login error:", error);
+        // Handle login error here
+      });
   };
 
   const handleEmailChange = (email) => {
-    setError("");
     setEmailError("");
+    setError("");
     const formattedEmail = email
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
-    setEmail(formattedEmail);
-  };
+      .toLowerCase()
+      .replace(/^\w/, (c) => c.toUpperCase());
 
+    setEmail(formattedEmail);
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    const isValidEmail = emailPattern.test(formattedEmail);
+
+    setEmailError(
+      isValidEmail
+        ? ""
+        : `Please Enter a Valid Email address, Hint: "Example@mail.com" `
+    );
+
+    if (isValidEmail) {
+      setEmailError("");
+    }
+    if (isValidEmail === " ") {
+      setEmailError("");
+    }
+  };
+  console.log(email, password);
   const handlePasswordChange = (password) => {
     setError("");
     setPasswordError("");
     setPassword(password);
-  };
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    console.log(password, "oassword");
+    if (!password.match(passwordRegex)) {
+      // Invalid password format
+      setPasswordError(
+        "Password must contain at least one lowercase letter, one uppercase letter, one number, one special character, and be at least 8 characters long"
+      );
+      return;
+    }
 
+    setPassword(password);
+  };
   //const { theme } = useTheme();
 
   const togglePasswordVisibility = () => {
@@ -175,16 +234,19 @@ const AuthSignIn = () => {
     <SafeAreaView
       style={{
         backgroundColor: "white",
-        flex: 1
+        flex: 1,
       }}
     >
       <ScrollView style={{ flexGrow: 1 }}>
         <View style={[styles.containerfirst, {}]}>
           <View>
             <Text style={styles.textBold}>Welcome</Text>
-            <Text  onPress={()=>navigation.navigate('createAccount')} style={styles.text}>
+            <Text
+              onPress={() => navigation.navigate("createAccount")}
+              style={styles.text}
+            >
               Don't have an Account?{" "}
-              <Text  style={styles.textSpan}>Create an Account</Text>
+              <Text style={styles.textSpan}>Create an Account</Text>
             </Text>
           </View>
 
@@ -252,7 +314,9 @@ const AuthSignIn = () => {
                 <Text style={styles.errorText}>{passwordError}</Text>
               ) : null}
             </View>
-            <TouchableOpacity onPress={()=>navigation.navigate('forgotPassword')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("forgotPassword")}
+            >
               <Text style={styles.forgotPassword}>Forgot Password?</Text>
             </TouchableOpacity>
           </View>

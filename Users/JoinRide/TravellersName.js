@@ -17,7 +17,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 const TravellersDetails = () => {
   const navigation = useNavigation();
   const headerStyle = {
-    backgroundColor: "white",
+    backgroundColor: "#fff",
   };
 
   const headerTitleStyle = {

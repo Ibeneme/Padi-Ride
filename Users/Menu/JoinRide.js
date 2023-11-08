@@ -13,7 +13,7 @@ import HistoryLogs from "../Components/HistoryLog";
 import { useNavigation } from "@react-navigation/native";
 const imageBackground = require("../../assets/Images/Dashboard.png");
 
-const JoinRide = () => {
+const Deliver = () => {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState("flipper"); // "flipper" is active by default
 
@@ -58,7 +58,7 @@ const JoinRide = () => {
           <Image
             style={{
               width: "100%",
-              height: 200,
+              height: 260,
               borderRadius: 12,
             }}
             source={imageBackground}
@@ -82,158 +82,225 @@ const JoinRide = () => {
                     borderRadius: 2222,
                     height: 48,
                     alignItems: "center",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
                     paddingLeft: 24,
                     paddingRight: 24,
                     flexDirection: "row",
                     gap: 12,
                   },
                 ]}
-                onPress={() => navigation.navigate("CreateRide")}
+                onPress={() => navigation.navigate("passengers")}
               >
-                <View style={{
-                  flexDirection:'row',
-                  gap: 12
-                }}>
-                  <FontAwesome5 name="car" size={18} color="white" />
-                  <Text style={styles.buttonText}>Join a Ride</Text>
-                </View>
-                <FontAwesome5 name="arrow-right" size={18} color="white" />
-              
+                <FontAwesome5 name="users" size={18} color="white" />
+                <Text style={styles.buttonText}>Carry a Passenger</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#FFFFFF25",
+                  borderRadius: 2222,
+                  height: 48,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingLeft: 24,
+                  paddingRight: 24,
+                  flexDirection: "row",
+                  gap: 12,
+                }}
+                onPress={() => navigation.navigate("CreateRide")}
+            
+              >
+                <FontAwesome5 name="car" size={18} color="white" />
+
+                <Text style={styles.buttonText}>Join a Ride</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
-
         <View
           style={{
-            marginBottom: 180,
+            flexDirection: "row",
+            width: "100%",
+            backgroundColor: "white",
+            marginTop: 12,
+            alignItems: "center",
+            padding: 12,
+            borderRadius: 2444,
           }}
         >
+          <TouchableOpacity
+            style={{
+              backgroundColor:
+                activeTab === "flipper" ? "#515FDF" : "transparent",
+              borderRadius: 24,
+              width: 140,
+              height: 48,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={toggleFlipper}
+          >
+            <Text
+              style={{
+                color: activeTab === "flipper" ? "white" : "black",
+                fontFamily: activeTab === "flipper" ? "Bold" : "Regular",
+                fontSize: 16,
+              }}
+            >
+              Passengers
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor:
+                activeTab === "ripper" ? "#515FDF" : "transparent",
+              borderRadius: 24,
+              width: 130,
+              height: 48,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={toggleRipper}
+          >
+            <Text
+              style={{
+                color: activeTab === "ripper" ? "white" : "black",
+                fontFamily: activeTab === "ripper" ? "Bold" : "Regular",
+                fontSize: 16,
+              }}
+            >
+              Rides            </Text>
+          </TouchableOpacity>
+        </View>
+        {activeTab === "flipper" && (
           <View
             style={{
-              flexDirection: "row",
-              width: "100%",
-              gap: 4,
-              justifyContent: "space-between",
+              marginBottom: 180,
             }}
           >
             <View
               style={{
-                backgroundColor: "#ffffff",
-                padding: 16,
-                borderRadius: 12,
-                height: 180,
-                paddingBottom: 24,
-                justifyContent: "space-between",
-                width: "49%",
-                marginTop: 12,
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: "#515FDF12",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: 48,
-                  height: 48,
-                  borderRadius: 3333,
-                }}
-              >
-                <FontAwesome5 name="truck" size={18} color="#515FDF" />
-              </View>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontFamily: "Bold",
-                }}
-              >
-                3
-              </Text>
-              <View>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontFamily: "Regular",
-                  }}
-                >
-                  Total Rides
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                backgroundColor: "#ffffff",
-                padding: 16,
-                borderRadius: 12,
-                height: 180,
-                paddingBottom: 24,
-                justifyContent: "space-between",
-                width: "49%",
-                marginTop: 12,
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: "#515FDF12",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: 48,
-                  height: 48,
-                  borderRadius: 3333,
-                }}
-              >
-                <FontAwesome5 name="truck" size={18} color="#515FDF" />
-              </View>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontFamily: "Bold",
-                }}
-              >
-                3
-              </Text>
-              <View>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontFamily: "Regular",
-                  }}
-                >
-                 Booked Ride
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View>
-            <View
-              style={{
-                //backgroundColor: "white",
-                borderRadius: 12,
-                //padding: 16,
-                gap: 2,
-                marginTop: 48,
-                marginBottom: 12,
                 flexDirection: "row",
+                width: "100%",
+                gap: 4,
                 justifyContent: "space-between",
-                alignItems: "center",
               }}
             >
-              <Text
+              <View
                 style={{
-                  fontSize: 18,
-                  fontFamily: "SemiBold",
+                  backgroundColor: "#ffffff",
+                  padding: 16,
+                  borderRadius: 12,
+                  height: 180,
+                  paddingBottom: 24,
+                  justifyContent: "space-between",
+                  width: "49%",
+                  marginTop: 12,
                 }}
               >
-                Ride History
-              </Text>
-              {/* <FontAwesome5
+                <View
+                  style={{
+                    backgroundColor: "#515FDF12",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 48,
+                    height: 48,
+                    borderRadius: 3333,
+                  }}
+                >
+                  <FontAwesome5 name="users" size={18} color="#515FDF" />
+                </View>
+                <Text
+                  style={{
+                    fontSize: 24,
+                    fontFamily: "Bold",
+                  }}
+                >
+                  3
+                </Text>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: "Regular",
+                    }}
+                  >
+                    Pending Passengers
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  backgroundColor: "#ffffff",
+                  padding: 16,
+                  borderRadius: 12,
+                  height: 180,
+                  paddingBottom: 24,
+                  justifyContent: "space-between",
+                  width: "49%",
+                  marginTop: 12,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: "#515FDF12",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 48,
+                    height: 48,
+                    borderRadius: 3333,
+                  }}
+                >
+                  <FontAwesome5 name="users" size={18} color="#515FDF" />
+                </View>
+                <Text
+                  style={{
+                    fontSize: 24,
+                    fontFamily: "Bold",
+                  }}
+                >
+                  3
+                </Text>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: "Regular",
+                    }}
+                  >
+                    Pending Passengers
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View>
+              <View
+                style={{
+                  //backgroundColor: "white",
+                  borderRadius: 12,
+                  //padding: 16,
+                  gap: 2,
+                  marginTop: 48,
+                  marginBottom: 12,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: "SemiBold",
+                  }}
+                >
+                  Passengers History
+                </Text>
+                {/* <FontAwesome5
                   name="arrow-alt-circle-down"
                   size={24}
                   color="#515FDF"
                 /> */}
 
-              {/* <Text
+                {/* <Text
                   style={{
                     fontSize: 14,
                     fontFamily: "Regular",
@@ -242,39 +309,207 @@ const JoinRide = () => {
                 >
                   View your Delivery History
                 </Text> */}
-            </View>
-            <View
-              style={{
-                gap: 8,
-              }}
-            >
-              <HistoryLogs
-                receiversName="Ibeneme Ikenna"
-                location="Port Harcourt"
-                price="$200.00"
-                icon="truck"
-              />
-              <HistoryLogs
-                receiversName="Jane Smith"
-                location="456 Elm St, Town"
-                price="$75.00"
-                icon="truck"
-              />
-              <HistoryLogs
-                receiversName="John Doe"
-                location="123 Main St, City"
-                price="$100.00"
-                icon="truck"
-              />
+              </View>
+              <View
+                style={{
+                  gap: 8,
+                }}
+              >
+                <HistoryLogs
+                  receiversName="Ibeneme Ikenna"
+                  location="Port Harcourt"
+                  price="$200.00"
+                  icon="users"
+                />
+                <HistoryLogs
+                  receiversName="Jane Smith"
+                  location="456 Elm St, Town"
+                  price="$75.00"
+                  icon="users"
+                />
+                <HistoryLogs
+                  receiversName="John Doe"
+                  location="123 Main St, City"
+                  price="$100.00"
+                  icon="users"
+                />
+              </View>
             </View>
           </View>
-        </View>
+        )}
+
+        {activeTab === "ripper" && (
+          <View
+            style={{
+              marginBottom: 180,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                width: "100%",
+                gap: 4,
+                justifyContent: "space-between",
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: "#ffffff",
+                  padding: 16,
+                  borderRadius: 12,
+                  height: 180,
+                  paddingBottom: 24,
+                  justifyContent: "space-between",
+                  width: "49%",
+                  marginTop: 12,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: "#515FDF12",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 48,
+                    height: 48,
+                    borderRadius: 3333,
+                  }}
+                >
+                  <FontAwesome5 name="car" size={18} color="#515FDF" />
+                </View>
+                <Text
+                  style={{
+                    fontSize: 24,
+                    fontFamily: "Bold",
+                  }}
+                >
+                  3
+                </Text>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: "Regular",
+                    }}
+                  >
+                    Pending Rides
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  backgroundColor: "#ffffff",
+                  padding: 16,
+                  borderRadius: 12,
+                  height: 180,
+                  paddingBottom: 24,
+                  justifyContent: "space-between",
+                  width: "49%",
+                  marginTop: 12,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: "#515FDF12",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 48,
+                    height: 48,
+                    borderRadius: 3333,
+                  }}
+                >
+                  <FontAwesome5 name="car" size={18} color="#515FDF" />
+                </View>
+                <Text
+                  style={{
+                    fontSize: 24,
+                    fontFamily: "Bold",
+                  }}
+                >
+                  3
+                </Text>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: "Regular",
+                    }}
+                  >
+                    Pending Rides
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View>
+              <View
+                style={{
+                  //backgroundColor: "white",
+                  borderRadius: 12,
+                  //padding: 16,
+                  gap: 2,
+                  marginTop: 48,
+                  marginBottom: 12,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: "SemiBold",
+                  }}
+                >
+                  RidesHistory
+                </Text>
+                {/* <FontAwesome5
+                  name="arrow-alt-circle-down"
+                  size={24}
+                  color="#515FDF"
+                /> */}
+
+                {/* <Text
+                  style={{
+                    fontSize: 14,
+                    fontFamily: "Regular",
+                    color: "gray",
+                  }}
+                >
+                  View your RidesHistory
+                </Text> */}
+              </View>
+              <View
+                style={{
+                  gap: 8,
+                }}
+              >
+                <HistoryLogs
+                  receiversName="Ibeneme Ikenna"
+                  location="Port Harcourt"
+                  price="$200.00"
+                  icon="car"
+                />
+                <HistoryLogs
+                  receiversName="Jane Smith"
+                  location="456 Elm St, Town"
+                  price="$75.00"
+                  icon="car"
+                />
+                <HistoryLogs
+                  receiversName="John Doe"
+                  location="123 Main St, City"
+                  price="$100.00"
+                  icon="car"
+                />
+              </View>
+            </View>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default JoinRide;
+export default Deliver;
 
 const styles = StyleSheet.create({
   container: {

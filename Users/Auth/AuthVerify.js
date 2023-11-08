@@ -9,13 +9,14 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
-//import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { resendOTP, verifyOTP } from "../../Redux/Auth/Auth";
 
 const AuthVerify = () => {
   const navigation = useNavigation();
-  // const dispatch = useDispatch();n
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
   const [email, setEmail] = useState("");
@@ -25,19 +26,70 @@ const AuthVerify = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [nots, setNotification] = useState("");
+
+  const route = useRoute();
+  const { emailAddress, id } = route.params;
+
+  
+  //console.log(emailAddress, id, "idddd");
+  // const handleLogin = () => {
+  //   setLoading(true);
+  //   navigation.navigate("success");
+  // };
+
   const handleLogin = () => {
-    setLoading(true);
-    navigation.navigate('success')
+    setNotification("");
+
+    const otpData = {
+      // Construct your OTP data here
+    };
+
+    dispatch(verifyOTP(email))
+      .then((response) => {
+        console.log("OTP Verification successfull:", response);
+        if (response.payload?.Success === "Account is verified") {
+          navigation.navigate("success");
+        }
+        if (
+          response?.payload?.request?._response ===
+          `{"error":"Invalid or expired OTP"}`
+        ) {
+          setError("Invalid or expired OTP");
+        }
+      })
+      .catch((error) => {
+        // setError(error);
+        console.log("OTP Verification error:", error);
+      });
+  };
+
+  const handleResendOTP = () => {
+    setNotification("");
+    setError("");
+    const otpData = {
+      email: emailAddress,
+      id: id,
+    };
+
+    dispatch(resendOTP(otpData))
+      .then((response) => {
+        console.log("Resend OTP successful:", response);
+        if (response.type === "registration/resendOTP/fulfilled") {
+          setNotification("OTP Resend to mail Successful");
+        }
+      })
+      .catch((error) => {
+        console.error("Resend OTP error:", error);
+        // Handle OTP resend error here
+      });
   };
 
   const handleEmailChange = (email) => {
     setError("");
     setEmailError("");
-    const formattedEmail = email
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
-    setEmail(formattedEmail);
+    console.log(email, "email");
+    setEmail(email);
   };
 
   const handlePasswordChange = (password) => {
@@ -51,102 +103,6 @@ const AuthVerify = () => {
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-  const styles = StyleSheet.create({
-    input: {
-      borderWidth: 1,
-      //  borderColor: `${'#000000'}60`,
-      color: "#000000",
-      padding: 10,
-      borderRadius: 5,
-      fontFamily: "Regular",
-      fontSize: 16,
-      height: 55,
-      marginTop: 4,
-      width: "100%",
-    },
-    errorText: {
-      color: "#ff0650",
-      marginTop: 4,
-      fontSize: 14,
-      fontFamily: "Regular",
-    },
-    forgotPassword: {
-      color: "#000000",
-      marginTop: -12,
-      fontSize: 14,
-      textAlign: "right",
-      fontFamily: "Regular",
-    },
-    passwordtext: {
-      textAlign: "right",
-      marginTop: 12,
-      color: "#000000",
-      fontFamily: "Regular",
-      fontSize: 14,
-    },
-    buttonClick: {
-      backgroundColor: "#515FDF",
-      width: "100%",
-      height: 55,
-      borderRadius: 4,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    buttonClickLoading: {
-      backgroundColor: "#515FDF45",
-      width: "100%",
-      height: 50,
-      borderRadius: 4,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    passwordInputContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      width: "100%",
-      position: "relative",
-    },
-    passwordVisibilityIcon: {
-      position: "absolute",
-      bottom: "10%",
-      right: 0,
-      padding: 10,
-      color: "#000000",
-      fontFamily: "Regular",
-    },
-    containerfirst: {
-      color: "#ffffff",
-      height: "100%",
-      padding: 16,
-    },
-    text: {
-      color: "#000000",
-      marginTop: 4,
-      fontFamily: "Regular",
-      fontSize: 16,
-    },
-    textBold: {
-      color: "#515FDF",
-      fontFamily: "Bold",
-      fontSize: 24,
-
-      marginTop: 48,
-    },
-    textSpan: {
-      color: "#515FDF",
-      fontFamily: "Regular",
-      fontSize: 16,
-      paddingLeft: 8,
-    },
-    viewForInputs: {
-      marginTop: 48,
-      justifyContent: "space-between",
-      gap: 24,
-      marginBottom: 72,
-    },
-  });
 
   const headerStyle = {
     backgroundColor: "#ffffff",
@@ -175,17 +131,19 @@ const AuthVerify = () => {
     <SafeAreaView
       style={{
         backgroundColor: "white",
-        flex: 1
+        flex: 1,
       }}
     >
       <ScrollView style={{ flexGrow: 1 }}>
         <View style={[styles.containerfirst, {}]}>
           <View>
             <Text style={styles.textBold}>Verify your account</Text>
-            <Text style={styles.text}>
-             Didnt get OTP{" "}
-              <Text style={styles.textSpan}>Resend</Text>
-            </Text>
+
+            <TouchableOpacity onPress={handleResendOTP}>
+              <Text style={styles.text}>
+                Didnt get OTP <Text style={styles.textSpan}>Resend</Text>
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.viewForInputs}>
@@ -199,7 +157,20 @@ const AuthVerify = () => {
                 {error}
               </Text>
             ) : null}
-
+            {nots ? (
+              <Text
+                style={[
+                  styles.errorText,
+                  {
+                    backgroundColor: "#515FDF25",
+                    color: "#515FDF",
+                    padding: 12,
+                  },
+                ]}
+              >
+                {nots}
+              </Text>
+            ) : null}
             <View>
               <Text style={styles.text}>OTP</Text>
               <TextInput
@@ -212,17 +183,17 @@ const AuthVerify = () => {
                 onBlur={() => setFocusedInput(null)}
                 value={email}
                 onChangeText={handleEmailChange}
-                placeholder="Enter Email Address"
+                placeholder="Enter OTP"
                 placeholderTextColor={`${"#000000"}60`}
               />
               {emailError ? (
                 <Text style={styles.errorText}>{emailError}</Text>
               ) : null}
             </View>
-        
-            <TouchableOpacity>
-              <Text style={styles.forgotPassword}>Didn't get Otp</Text>
-            </TouchableOpacity>
+
+            {/* <TouchableOpacity>
+              <Text style={styles.forgotPassword}>Didn't get Otp, Resend</Text>
+            </TouchableOpacity> */}
           </View>
           <View>
             <TouchableOpacity style={styles.buttonClick} onPress={handleLogin}>
@@ -232,7 +203,7 @@ const AuthVerify = () => {
                   { fontFamily: "Bold", color: "#fff" },
                 ]}
               >
-                {loading ? <ActivityIndicator color="#fff" /> : "Login"}
+                {loading ? <ActivityIndicator color="#fff" /> : "Submit"}
               </Text>
             </TouchableOpacity>
           </View>
@@ -241,5 +212,102 @@ const AuthVerify = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  input: {
+    borderWidth: 1,
+    //  borderColor: `${'#000000'}60`,
+    color: "#000000",
+    padding: 10,
+    borderRadius: 5,
+    fontFamily: "Regular",
+    fontSize: 16,
+    height: 55,
+    marginTop: 4,
+    width: "100%",
+  },
+  errorText: {
+    color: "#ff0650",
+    marginTop: 4,
+    fontSize: 14,
+    fontFamily: "Regular",
+  },
+  forgotPassword: {
+    color: "#000000",
+    marginTop: -12,
+    fontSize: 14,
+    textAlign: "right",
+    fontFamily: "Regular",
+  },
+  passwordtext: {
+    textAlign: "right",
+    marginTop: 12,
+    color: "#000000",
+    fontFamily: "Regular",
+    fontSize: 14,
+  },
+  buttonClick: {
+    backgroundColor: "#515FDF",
+    width: "100%",
+    height: 55,
+    borderRadius: 4,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonClickLoading: {
+    backgroundColor: "#515FDF45",
+    width: "100%",
+    height: 50,
+    borderRadius: 4,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  passwordInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    position: "relative",
+  },
+  passwordVisibilityIcon: {
+    position: "absolute",
+    bottom: "10%",
+    right: 0,
+    padding: 10,
+    color: "#000000",
+    fontFamily: "Regular",
+  },
+  containerfirst: {
+    color: "#ffffff",
+    height: "100%",
+    padding: 16,
+  },
+  text: {
+    color: "#000000",
+    marginTop: 4,
+    fontFamily: "Regular",
+    fontSize: 16,
+  },
+  textBold: {
+    color: "#515FDF",
+    fontFamily: "Bold",
+    fontSize: 24,
+
+    marginTop: 48,
+  },
+  textSpan: {
+    color: "#515FDF",
+    fontFamily: "Regular",
+    fontSize: 16,
+    paddingLeft: 8,
+  },
+  viewForInputs: {
+    marginTop: 48,
+    justifyContent: "space-between",
+    gap: 24,
+    marginBottom: 72,
+  },
+});
 
 export default AuthVerify;
