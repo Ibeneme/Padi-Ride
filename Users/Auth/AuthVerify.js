@@ -31,19 +31,11 @@ const AuthVerify = () => {
   const route = useRoute();
   const { emailAddress, id } = route.params;
 
-  
-  //console.log(emailAddress, id, "idddd");
-  // const handleLogin = () => {
-  //   setLoading(true);
-  //   navigation.navigate("success");
-  // };
-
   const handleLogin = () => {
     setNotification("");
 
     const otpData = {
-      // Construct your OTP data here
-    };
+   };
 
     dispatch(verifyOTP(email))
       .then((response) => {
@@ -74,13 +66,13 @@ const AuthVerify = () => {
 
     dispatch(resendOTP(otpData))
       .then((response) => {
-        console.log("Resend OTP successful:", response);
+        console.log("Resend OTP successful:", response, otpData);
         if (response.type === "registration/resendOTP/fulfilled") {
           setNotification("OTP Resend to mail Successful");
         }
       })
       .catch((error) => {
-        console.error("Resend OTP error:", error);
+        console.log("Resend OTP error:", error, otpData);
         // Handle OTP resend error here
       });
   };
@@ -254,6 +246,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 78
   },
   buttonClickLoading: {
     backgroundColor: "#515FDF45",

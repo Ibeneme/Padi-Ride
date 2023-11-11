@@ -250,7 +250,7 @@ const AuthCreateAccount = () => {
               style={styles.text}
               onPress={() =>
                 //navigation.navigate("SignIn")
-                navigation.navigate("verify")
+                navigation.navigate("SignIn")
               }
             >
               Already have an Account?{" "}
@@ -513,6 +513,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 64,
   },
   buttonClickLoading: {
     backgroundColor: "#515FDF45",

@@ -105,7 +105,6 @@ const Deliver = () => {
           />
           <View style={styles.overlay}>
             <Text style={styles.name}>
-              {" "}
               👋 {""}Hello, {""}
               {userProfile.first_name}
             </Text>
@@ -302,7 +301,7 @@ const Deliver = () => {
                     fontFamily: "Bold",
                   }}
                 >
-                 {delivery?.length}
+                  {delivery?.length}
                 </Text>
                 <View>
                   <Text
@@ -338,32 +337,18 @@ const Deliver = () => {
                 >
                   Delivery History
                 </Text>
-                {/* <FontAwesome5
-                  name="arrow-alt-circle-down"
-                  size={24}
-                  color="#515FDF"
-                /> */}
-
-                {/* <Text
-                  style={{
-                    fontSize: 14,
-                    fontFamily: "Regular",
-                    color: "gray",
-                  }}
-                >
-                  View your Delivery History
-                </Text> */}
               </View>
               <View
                 style={{
                   gap: 8,
                 }}
               >
-                {delivery?.length === 0 ? "No deliveries avaliable" : null}
+                {delivery?.length === 0 ? (
+                  <Text>No deliveries available</Text>
+                ) : null}
 
                 {delivery?.map((data, index) => (
                   <View key={index}>
-                    {/* Render the HistoryLogs component with the delivery data */}
                     <HistoryLogs
                       receiversName={`Destination: ${data?.destination}`}
                       location={
@@ -376,25 +361,6 @@ const Deliver = () => {
                     />
                   </View>
                 ))}
-
-                {/* <HistoryLogs
-                  receiversName="Ibeneme Ikenna"
-                  location="Port Harcourt"
-                  price="$200.00"
-                  icon="truck"
-                />
-                <HistoryLogs
-                  receiversName="Jane Smith"
-                  location="456 Elm St, Town"
-                  price="$75.00"
-                  icon="truck"
-                />
-                <HistoryLogs
-                  receiversName="John Doe"
-                  location="123 Main St, City"
-                  price="$100.00"
-                  icon="truck"
-                /> */}
               </View>
             </View>
           </View>

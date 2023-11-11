@@ -12,7 +12,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { passwordReset, registerUser, resendOTP } from "../../Redux/Auth/Auth";
 import { useDispatch } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const AuthSignInNew = () => {
   const navigation = useNavigation();
@@ -66,6 +66,7 @@ const AuthSignInNew = () => {
     const userData = {
       password: password,
       password2: confirmPassword,
+      otp: otp
     };
 
     setLoading(true);
@@ -160,6 +161,9 @@ const AuthSignInNew = () => {
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+
+  const route = useRoute();
+  const { otp } = route.params;
 
   return (
     <SafeAreaView

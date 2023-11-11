@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, Image, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 
-export default function Auth() {
+export default function OnboardingOne() {
   const navigation = useNavigation();
 
   React.useLayoutEffect(() => {
@@ -30,17 +30,17 @@ export default function Auth() {
         <Text style={[styles.textsmall]}>Travel and Parcel Smart</Text>
       </View>
       <View style={styles.containerButton}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate("SignIn")}
           style={styles.buttonClick}
         >
           <Text style={styles.buttonText}>Existing User</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
-          onPress={() => navigation.navigate("createAccount")}
+          onPress={() => navigation.navigate("OnboardingTwo")}
           style={styles.buttonClicks}
         >
-          <Text style={styles.buttonText}>New User</Text>
+          <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </View>
       <StatusBar style="auto" />
@@ -93,9 +93,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 64
   },
-
   buttonClicks: {
     backgroundColor: "#18CC3F",
     width: "100%",
@@ -104,7 +102,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 64
+    borderRadius: 34
   },
   buttonText: {
     color: "#ffffff",

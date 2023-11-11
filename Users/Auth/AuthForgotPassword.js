@@ -141,6 +141,7 @@ const AuthForgotPassword = () => {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      borderRadius: 64,
     },
     buttonClickLoading: {
       backgroundColor: "#515FDF45",

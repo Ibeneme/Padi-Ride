@@ -49,7 +49,9 @@ const AuthVerifyTwo = () => {
       .then((response) => {
         console.log("OTP Verification successfull:", response);
         if (response.payload?.Success === "Account is verified") {
-          navigation.navigate("newpass");
+          navigation.navigate("newpass",  {
+            otp: email
+          });
         }
         if (
           response?.payload?.request?._response ===

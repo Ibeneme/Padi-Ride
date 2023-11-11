@@ -3,9 +3,8 @@ import { StyleSheet, Text, TouchableOpacity, Image, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 
-export default function Auth() {
+export default function OnboardingTwo() {
   const navigation = useNavigation();
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -17,7 +16,7 @@ export default function Auth() {
       style={[
         styles.containerfirst,
         {
-          backgroundColor: "#ffff",
+         
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
@@ -31,16 +30,10 @@ export default function Auth() {
       </View>
       <View style={styles.containerButton}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("SignIn")}
+          onPress={() => navigation.navigate("Auth")}
           style={styles.buttonClick}
         >
-          <Text style={styles.buttonText}>Existing User</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("createAccount")}
-          style={styles.buttonClicks}
-        >
-          <Text style={styles.buttonText}>New User</Text>
+          <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </View>
       <StatusBar style="auto" />
@@ -52,6 +45,7 @@ const styles = StyleSheet.create({
   containerfirst: {
     height: "100%",
     padding: 16,
+    backgroundColor: "#515FDF",
   },
   container: {
     flex: 2,
@@ -60,10 +54,11 @@ const styles = StyleSheet.create({
     marginBottom: 94,
   },
   text: {
-    color: "#000",
+    color: "#fff",
     fontSize: 24,
     fontFamily: "Bold",
     marginTop: "5%",
+
   },
   logo: {
     width: 100,
@@ -71,7 +66,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   textsmall: {
-    color: "#000",
+    color: "#fff",
     textAlign: "center",
     fontSize: 14,
     marginTop: "0.5%",
@@ -86,17 +81,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonClick: {
-    backgroundColor: "#515FDF",
-    width: "100%",
-    height: 55,
-    borderRadius: 4,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 64
-  },
-
-  buttonClicks: {
     backgroundColor: "#18CC3F",
     width: "100%",
     height: 55,
@@ -104,7 +88,16 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 64
+    borderRadius: 34
+  },
+  buttonClicks: {
+    backgroundColor: "#fff",
+    width: "100%",
+    height: 55,
+    borderRadius: 4,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
     color: "#ffffff",

@@ -7,6 +7,8 @@ import AuthVerify from "../Users/Auth/AuthVerify";
 import AuthSuccess from "../Users/Auth/AuthSuccess";
 import AuthVerifyTwo from "../Users/Auth/AuthVerifyTwo";
 import AuthSignInNew from "../Users/Auth/CreateAccount";
+import OnboardingOne from "../Users/Onboarding/Onboarding";
+import OnboardingTwo from "../Users/Onboarding/OnboardingOne";
 
 const Stack = createStackNavigator();
 
@@ -18,6 +20,17 @@ function AuthStack() {
         options={{ headerShown: false }}
         component={Welcome}
       /> */}
+      <Stack.Screen
+        name="Onboarding"
+        options={{ headerShown: false }}
+        component={OnboardingOne}
+      />
+      <Stack.Screen
+        name="OnboardingTwo"
+        options={{ headerShown: false }}
+        component={OnboardingTwo}
+      />
+
       <Stack.Screen
         name="Auth"
         options={{ headerShown: false }}
